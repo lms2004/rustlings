@@ -16,6 +16,7 @@
 // - The input is going to be a Vector of 2-length tuples,
 //   the first element is the string, the second one is the command.
 // - The output element is going to be a vector of strings.
+use std::fmt::format;
 
 enum Command {
     Uppercase,
@@ -27,7 +28,16 @@ mod my_module {
     use super::Command;
 
     // TODO: Complete the function.
-    // pub fn transformer(input: ???) -> ??? { ??? }
+    pub fn transformer(input: Vec<(String, Command)>) -> Vec<String> {
+        input.into_iter().map(|(text,command)|{
+            match command{
+                Command::Uppercase => text.to_uppercase(), // 如果是 Uppercase 变体，将字符串转换为大写
+                Command::Trim => text.trim().to_string(), // 如果是 Trim 变体，修剪字符串
+                Command::Append(times) => format!("{}{}",text,"bar".repeat(times)), // 如果是 Append 变体，附加 "bar" 指定次数
+           
+            }
+        }).collect()
+    }
 }
 
 fn main() {
@@ -37,12 +47,12 @@ fn main() {
 #[cfg(test)]
 mod tests {
     // TODO: What do we need to import to have `transformer` in scope?
-    // use ???;
+    use super::my_module::transformer;
     use super::Command;
 
     #[test]
     fn it_works() {
-        let input = vec![
+        let input: Vec<(String, Command)> = vec![
             ("hello".to_string(), Command::Uppercase),
             (" all roads lead to rome! ".to_string(), Command::Trim),
             ("foo".to_string(), Command::Append(1)),
